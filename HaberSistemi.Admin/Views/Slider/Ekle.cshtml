@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Slider Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model HaberSistemi.Data.Model.Slider
+
+
+
+@* ckeditor için *@
+<script src="~/ckeditor/ckeditor.js"></script>
+
+<style>
+    .bootstrap-tagsinput {
+        width: 100%;
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Basic form -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <header class="panel-heading">@ViewBag.Title</header>
+                <div class="panel-body">
+                    <form role="form" action="/Slider/Ekle" method="post" enctype="multipart/form-data" id="SliderForm">
+
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Başlık</label>
+                            <input type="text" class="form-control" id="Baslik" placeholder="Başlık" name="Baslik">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">URL</label>
+                            <input type="text" class="form-control" id="URL" placeholder="URL" name="URL">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1"> Açıklama</label>
+                            @*    <input type="text" class="form-control" id="Aciklama" name="Aciklama" placeholder="Açıklama">*@
+
+                            @Html.TextArea("Aciklama")
+                            <script type="text/javascript">
+                                var editor = CKEDITOR.instances['Aciklama'];
+                                if (editor) {
+                                    editor.destroy(true);
+                                }
+                                CKEDITOR.replace('Aciklama', { enterMode: CKEDITOR.ENTER_BR, });
+                            </script>
+
+
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Resim</label>
+                            <input type="file" class="form-control" name="ResimURL" id="ResimURL" accept="image/*">
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" checked id="AktifMi" name="AktifMi"> Aktif Mi?
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-default" id="SliderEkle">Kaydet</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Basic form -->
+
+</div>
+
+@* biz oluşturduk *@
+<script src="~/Scripts/Global.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(document).on("click", "#SliderEkle", function () {
+    //JQUERY FORM PLUGİN
+           
+            //Jquery form plugin ile verileri controllera direk olarak gönderebiliyoruz.tek tek değerleri almaya gerek yok.
+            $('#SliderForm').ajaxForm({
+
+                success: function (response) { // controllerdan dönen veri -->response  // //ResultJson sınıfı tipinde  gelcek controllerdan  
+                    if (response.Success) {
+                        //bootbox.js (modal popup)
+
+                        bootbox.alert(response.Message, function () {
+                            location.reload();//sayfayı yenile
+                        });
+
+
+                    } else {
+                        bootbox.alert(response.Message, function () {
+                            //geri döndüğünde bir şey yapılması isteniyorsa buraya yazılır
+                        });
+                    }
+                }
+
+            });
+
+
+
+
+
+        });
+    });
+
+
+</script>
+
+
+

@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Kategori Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/plugins/jquery.min.js"></script>
+<script src="~/Scripts/notify.js"></script>
+@* sayfalama için *@
+@using PagedList
+@using PagedList.Mvc
+
+@model  IPagedList<HaberSistemi.Data.Model.Kategori>
+<div class="container-fluid">
+
+    <div class="row">
+        <!-- Responsive table -->
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <header class="panel-heading">@ViewBag.Title</header>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Kategori Adı</th>
+                                    <th>Üst Kategori</th>
+                                    <th>Durum</th>
+                                    @*<th>Ekleyen</th>*@
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td><span class="label label-success">@item.ID</span></td>
+                                        <td>@item.KategoriAdi</td>
+                                        <td>
+                                            @foreach (var ustKategori in Model.Where(x=>x.ID==item.ParentID))
+                                            {
+                                                <span>@ustKategori.KategoriAdi</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.AktifMi == true)
+                                            {
+                                                <b class="label label-success">Aktif</b>
+                                            }
+                                            else
+                                            {
+                                                <b class="label label-danger">Pasif</b>
+                                            }
+                                        </td>
+                                        @*<td>@item.Kullanici.AdSoyad</td>*@
+                                        <td>
+                                            @*<button class="btn btn-default btn-sm">Düzenle</button>*@
+                                            <a href="/Kategori/Duzenle/@item.ID">Düzenle</a>
+                                            @*@Html.ActionLink("Sil", "Sil", new { id = item.ID }, new {onclick="return confirm('Kaydı silmek istediğinize emin misiniz?')" })*@
+                                            <button class="btn btn-default btn-sm KategoriDelete"  onclick="KategoriSil(this)" data-id="@item.ID">Sil</button>
+
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @Html.PagedListPager(Model, Sayfa => Url.Action("Index", new {Sayfa }),PagedListRenderOptions.Classic)
+        </div>
+        <!-- /Responsive table -->
+    </div>
+
+
+</div>

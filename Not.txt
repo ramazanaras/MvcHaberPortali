@@ -1,0 +1,51 @@
+HaberSistemi.Admin projesine entity framework yükle ve appconfige connection string ekle
+HaberSistemi.Data projesine entity framework yükle ve appconfige connection string ekle
+
+
+HaberSistemi.UI projesine appconfig ekle (veritabaný oluþmasý için.)
+
+ //<connectionStrings>
+ //   <add name="HaberContext" connectionString="Data Source=.;Initial Catalog=HaberPortali;Integrated Security=True;MultipleActiveResultSets=True"
+ //     providerName="System.Data.SqlClient" />
+ // </connectionStrings>
+
+
+
+//Package manager console 'a  Enable-Migrations yazýyoruz.Default Projecti HaberSistemi.Data seçiyoruz
+
+//Daha sonra   Add-Migration Olustur       diyoruz
+
+//Daha sonra Update-Database diyerek veritabanýnýn oluþmasýný saðlýyoruz
+
+//========================
+Eðerki diyelimki baþka model classlarý ekledik ve bunlarýnda veritabanýnda tablo olarak oluþmasýný istersek tekrardan aþaðýdaki iþlemleri package manager console 'a yazmalýyýz
+
+Add-Migration Olustur    diyoruz
+Daha sonra Update-Database diyerek veritabanýna yeni tablolarýn oluþmasýný saðlýyoruz
+
+//====================
+Admin projesine  package manager consoledan autofac'i yüklüyoruz.(Dependency injection)
+PM> Install-Package Autofac.MVC5  
+
+
+//Otomatik veritabaný guncelleme (Migration)
+
+AutomaticMigrationsEnabled = true;  //true yaptýktan  sonra veritabanýný güncelleme için Package manager console Update-database dememiz yeterli.Add Migration Olustur demeye gerek yok
+Package manager consoleda Default Project kýsmýnda HaberSistemi.Data yý seçmeyi unutma
+
+
+Update-Database -Force diyerek modeldeki deðiþikliði veritabanýna yansýt diyoruz.(zorla)
+
+
+
+//////////////7
+Eðer modelde köklü deðiþiklik yapmýþsak .veritabanýný sil.Migrations klasörünü sil. ve aþaðýdaki komutlarý tekrardan uygula
+ 
+//Package manager console 'a  Enable-Migrations yazýyoruz.Default Projecti HaberSistemi.Data seçiyoruz
+
+//Daha sonra   Add-Migration Olustur       diyoruz
+
+//Daha sonra Update-Database diyerek veritabanýnýn oluþmasýný saðlýyoruz
+
+daha sonra Configuration classýnda aþaðýdaki iþlemi yap.
+AutomaticMigrationsEnabled = true;  //true yaptýktan  sonra veritabanýný güncelleme için Package manager console Update-database dememiz yeterli.Add Migration Olustur demeye gerek yok
